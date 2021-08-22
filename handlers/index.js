@@ -1,6 +1,12 @@
 const { getUser, getUsers, createUser } = require("./users.handlers");
 
 const {
+  createEmployee,
+  getEmployee,
+  getEmployes,
+} = require("./employes.handlers");
+
+const {
   hashPassword,
   verifyPassword,
   checkNotIncludeBadCharaters,
@@ -19,4 +25,8 @@ module.exports = {
   checkNotIncludeBadCharaters,
   // Token
   generateToken,
+  // Employee
+  createEmployee,
+  getEmployee,
+  getEmployes,
 };
