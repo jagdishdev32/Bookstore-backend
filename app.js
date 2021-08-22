@@ -13,4 +13,9 @@ app.get("/", (req, res) => {
 	return res.status(200).json({message: "welcome to home page!"})
 });
 
+// Routes
+const usersRoute = require("./routes/users.route");
+
+app.use("/users", usersRoute);
+
 module.exports = app;
