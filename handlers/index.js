@@ -29,6 +29,12 @@ const {
   getBooksByName,
 } = require("./books.handlers");
 
+const {
+  getAllBookTransactions,
+  getUserPurchasedBooks,
+  purchasedBookTransaction,
+} = require("./transaction.handlers");
+
 module.exports = {
   // User
   getUser,
@@ -48,10 +54,14 @@ module.exports = {
   getEmployee,
   getEmployes,
   checkEmployeeLoggedIn,
-  //   Books
+  // Books
   createBook,
   getBook,
   getBooks,
   increaseBookSales,
   getBooksByName,
+  // Transactions
+  getAllBookTransactions,
+  getUserPurchasedBooks,
+  purchasedBookTransaction,
 };

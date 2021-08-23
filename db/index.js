@@ -1,4 +1,4 @@
-// For Testing Checks
+// For Testing Checks beforeAll, beforeEach, afterEach, afterAll functions
 require("dotenv").config();
 
 const Pool = require("pg").Pool;

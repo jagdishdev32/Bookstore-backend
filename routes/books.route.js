@@ -3,10 +3,7 @@ const db = require("../db");
 const {
   createBook,
   checkNotIncludeBadCharaters,
-  verifyPassword,
-  generateToken,
   checkEmployeeLoggedIn,
-  checkUserLoggedIn,
   checkAnyLoggedIn,
   getBooks,
   getBooksByName,
@@ -39,19 +36,6 @@ router.post("/", checkEmployeeLoggedIn, async (req, res) => {
 // ACCESS	  PRIVATE (both user and employee)
 router.get("/search/:name", checkAnyLoggedIn, async (req, res) => {
   const { name } = req.params;
-  if (checkNotIncludeBadCharaters(name)) {
-    const books = await getBooksByName(name);
-    return res.status(200).json(books);
-  }
-  return res.status(400).json({ message: "bad Characters Included" });
-});
-
-// METH		  POST	/books/purchase
-// DESC		  Purchase Book
-// ACCESS	  PRIVATE (user only)
-router.post("/purchase/", checkUserLoggedIn, async (req, res) => {
-  const { user_id, book_id } = req.body;
-
   if (checkNotIncludeBadCharaters(name)) {
     const books = await getBooksByName(name);
     return res.status(200).json(books);

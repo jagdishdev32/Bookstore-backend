@@ -22,16 +22,17 @@ module.exports = {
     return book;
   },
   //   Increasing Old Sales No. by 1
-  increaseBookSales: async (id) => {
-    const currentBook = await getBook(id);
+  increaseBookSales: async (book_id, quantity = 1) => {
+    const data = await db.query("SELECT * FROM books WHERE id=$1", [book_id]);
+    const currentBook = data.rows[0];
 
     if (currentBook) {
       const oldSalesValue = currentBook.sales;
       const data = await db.query(
-        "UPDATE books SET sales=$1 WHERE id=$1 RETURNING *",
-        [oldSalesValue + 1]
+        "UPDATE books SET sales=$1 WHERE id=$2 RETURNING *",
+        [oldSalesValue + quantity, book_id]
       );
-      return { message: "SalesUpdated", book: data.rows[0] };
+      return { message: "sales updated", book: data.rows[0] };
     }
 
     return { message: "No Book With this Id" };
