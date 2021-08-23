@@ -9,6 +9,7 @@ const {
   checkUserLoggedIn,
   checkAnyLoggedIn,
   getBooks,
+  getBooksByName,
 } = require("../handlers");
 
 // METH		  GET	/books/
@@ -31,6 +32,18 @@ router.post("/", checkEmployeeLoggedIn, async (req, res) => {
     message: "Book Registered...",
     book: book,
   });
+});
+
+// METH		  GET	/books/search/:name
+// DESC		  Get All Books by Name
+// ACCESS	  PRIVATE (both user and employee)
+router.get("/search/:name", checkAnyLoggedIn, async (req, res) => {
+  const { name } = req.params;
+  if (checkNotIncludeBadCharaters(name)) {
+    const books = await getBooksByName(name);
+    return res.status(200).json(books);
+  }
+  return res.status(400).json({ message: "bad Characters Included" });
 });
 
 module.exports = router;

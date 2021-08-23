@@ -36,4 +36,10 @@ module.exports = {
 
     return { message: "No Book With this Id" };
   },
+  getBooksByName: async (name) => {
+    const data = await db.query(
+      `SELECT * FROM books WHERE name ILIKE '%${name}%'`
+    );
+    return data.rows;
+  },
 };

@@ -26,6 +26,7 @@ const {
   getBook,
   getBooks,
   increaseBookSales,
+  getBooksByName,
 } = require("./books.handlers");
 
 module.exports = {
@@ -52,4 +53,5 @@ module.exports = {
   getBook,
   getBooks,
   increaseBookSales,
+  getBooksByName,
 };

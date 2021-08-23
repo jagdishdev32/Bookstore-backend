@@ -3,13 +3,7 @@ const db = require("../db");
 const app = require("../app");
 const request = require("supertest");
 
-const {
-  getBooks,
-  createBook,
-  createUser,
-  generateToken,
-  hashPassword,
-} = require("../handlers");
+const { getBooks, generateToken, hashPassword } = require("../handlers");
 
 const Auth = {};
 
@@ -207,5 +201,18 @@ describe("POST /books", () => {
     // Make Sure no. books remain same
     const books = await getBooks();
     expect(books.length).toBe(15);
+  });
+});
+
+// Search Book by name
+describe("GET /books/search/:name", () => {
+  test("request with user token, response return with list of books which includes na in name", async () => {
+    // Searching book by name na
+    const response = await request(app)
+      .get("/books/search/na")
+      .set("Authorization", Auth.user.token);
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.length).toBe(2);
   });
 });
