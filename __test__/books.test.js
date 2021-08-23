@@ -15,7 +15,8 @@ beforeAll(async () => {
 		name TEXT NOT NULL UNIQUE,
 		author TEXT NOT NULL,
 		sales INT DEFAULT 0,
-		quantity INT NOT NULL
+		quantity INT NOT NULL,
+    price INT NOT NULL
 		)`
   );
 
@@ -45,21 +46,21 @@ beforeAll(async () => {
 beforeEach(async () => {
   // Inserting demo books data
   await db.query(`
-    INSERT INTO books (name, author, quantity) VALUES ('Leitneria pilosa J.A. Schrad. & W.R. Graves', 'sachin', 190);
-    INSERT INTO books (name, author, quantity) VALUES ('Amaranthus crispus (Lesp. & Thev.) N. Terracc.', 'nikhil', 115);
-    INSERT INTO books (name, author, quantity) VALUES ('Astragalus lentiginosus Douglas ex Hook. var. diphysus (A. Gray) M.E. Jones', 'nitin', 124);
-    INSERT INTO books (name, author, quantity) VALUES ('Torenia L.', 'nikhil', 115);
-    INSERT INTO books (name, author, quantity) VALUES ('Philadelphus pumilus Rydb. var. ovatus Hu', 'mukesh', 114);
-    INSERT INTO books (name, author, quantity) VALUES ('Theobroma mammosum Cuatrec. & Leon', 'nitin', 124);
-    INSERT INTO books (name, author, quantity) VALUES ('Malaxis massonii (Ridley) Kuntze', 'sachin', 150);
-    INSERT INTO books (name, author, quantity) VALUES ('Cladonia homosekikaica Nuno', 'nikhil', 193);
-    INSERT INTO books (name, author, quantity) VALUES ('Banara vanderbiltii Urb.', 'sachin', 199);
-    INSERT INTO books (name, author, quantity) VALUES ('Pelargonium odoratissimum (L.) L''Hér. ex Aiton', 'nikhil', 156);
-    INSERT INTO books (name, author, quantity) VALUES ('Porophyllum pygmaeum Keil & J. Morefield', 'nikhil', 139);
-    INSERT INTO books (name, author, quantity) VALUES ('Annona senegalensis Pers.', 'nikhil', 173);
-    INSERT INTO books (name, author, quantity) VALUES ('Eriogonum heermannii Durand & Hilg. var. heermannii', 'sachin', 186);
-    INSERT INTO books (name, author, quantity) VALUES ('Ulex europaeus L.', 'sachin', 155);
-    INSERT INTO books (name, author, quantity) VALUES ('Allium perdulce S.V. Fraser var. sperryi Ownbey', 'nitin', 171);
+    INSERT INTO books (name, author, quantity, price) VALUES ('Slender Oat', 'Justin Allsebrook', 123, 372);
+    INSERT INTO books (name, author, quantity, price) VALUES ('Dwarf Century Plant', 'Stinky Tabard', 134, 288);
+    INSERT INTO books (name, author, quantity, price) VALUES ('Bryum Moss', 'Adriaens Skelcher', 136, 758);
+    INSERT INTO books (name, author, quantity, price) VALUES ('Monnina', 'Lilah Babington', 142, 300);
+    INSERT INTO books (name, author, quantity, price) VALUES ('Mexican Oak', 'Philip Dunkersley', 141, 267);
+    INSERT INTO books (name, author, quantity, price) VALUES ('Closedhead Sedge', 'Leyla Capener', 165, 788);
+    INSERT INTO books (name, author, quantity, price) VALUES ('Colicroot', 'Dolly cornhill', 177, 959);
+    INSERT INTO books (name, author, quantity, price) VALUES ('Gulf Spikemoss', 'Aldon Mackett', 186, 288);
+    INSERT INTO books (name, author, quantity, price) VALUES ('Dot Lichen', 'Florencia Floris', 136, 620);
+    INSERT INTO books (name, author, quantity, price) VALUES ('Desert Foxglove', 'Killy Le Count', 120, 769);
+    INSERT INTO books (name, author, quantity, price) VALUES ('Aquacatillo', 'Hugo Ianizzi', 161, 317);
+    INSERT INTO books (name, author, quantity, price) VALUES ('Waxflower Shinleaf', 'Melisandra Prattington', 143, 661);
+    INSERT INTO books (name, author, quantity, price) VALUES ('Torrey''s Saltbush', 'Leslie Adair', 117, 459);
+    INSERT INTO books (name, author, quantity, price) VALUES ('Hybrid Willow', 'Franni Dobrowski', 151, 402);
+    INSERT INTO books (name, author, quantity, price) VALUES ('Longflower Alumroot', 'Phebe Vanyashkin', 189, 350);
   `);
 
   const hashedPassword = await hashPassword("secret");
@@ -166,12 +167,14 @@ describe("POST /books", () => {
         name: "newBook",
         author: "jd",
         quantity: 200,
+        price: 100,
       });
 
     expect(response.body.message).toBe("Book Registered...");
     expect(response.body.book.name).toBe("newBook");
     expect(response.body.book.author).toBe("jd");
     expect(response.body.book.quantity).toBe(200);
+    expect(response.body.book.price).toBe(100);
     expect(response.statusCode).toBe(201);
 
     // Make Sure no. books increased
@@ -193,6 +196,7 @@ describe("POST /books", () => {
         name: "newBook",
         author: "jd",
         quantity: 200,
+        price: 100,
       });
 
     expect(response.body.message).toBe("unauthorized");
@@ -206,13 +210,13 @@ describe("POST /books", () => {
 
 // Search Book by name
 describe("GET /books/search/:name", () => {
-  test("request with user token, response return with list of books which includes na in name", async () => {
+  test("request with user token, response return with list of books which includes s in name", async () => {
     // Searching book by name na
     const response = await request(app)
-      .get("/books/search/na")
+      .get("/books/search/s")
       .set("Authorization", Auth.user.token);
 
     expect(response.statusCode).toBe(200);
-    expect(response.body.length).toBe(2);
+    expect(response.body.length).toBe(7);
   });
 });

@@ -13,10 +13,10 @@ module.exports = {
 
     return book;
   },
-  createBook: async (name, author, quantity) => {
+  createBook: async (name, author, quantity, price) => {
     const data = await db.query(
-      "INSERT INTO books (name, author, quantity) VALUES ($1, $2, $3) RETURNING *",
-      [name, author, quantity]
+      "INSERT INTO books (name, author, quantity, price) VALUES ($1, $2, $3, $4) RETURNING *",
+      [name, author, quantity, price]
     );
     const book = data.rows[0];
     return book;

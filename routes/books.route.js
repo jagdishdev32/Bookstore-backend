@@ -24,9 +24,9 @@ router.get("/", checkAnyLoggedIn, async (req, res) => {
 // DESC		  Add new book
 // ACCESS 	PRIVATE (employee only)
 router.post("/", checkEmployeeLoggedIn, async (req, res) => {
-  let { name, author, quantity } = req.body;
+  let { name, author, quantity, price } = req.body;
 
-  const book = await createBook(name, author, quantity);
+  const book = await createBook(name, author, quantity, price);
 
   return res.status(201).json({
     message: "Book Registered...",
@@ -39,6 +39,19 @@ router.post("/", checkEmployeeLoggedIn, async (req, res) => {
 // ACCESS	  PRIVATE (both user and employee)
 router.get("/search/:name", checkAnyLoggedIn, async (req, res) => {
   const { name } = req.params;
+  if (checkNotIncludeBadCharaters(name)) {
+    const books = await getBooksByName(name);
+    return res.status(200).json(books);
+  }
+  return res.status(400).json({ message: "bad Characters Included" });
+});
+
+// METH		  POST	/books/purchase
+// DESC		  Purchase Book
+// ACCESS	  PRIVATE (user only)
+router.post("/purchase/", checkUserLoggedIn, async (req, res) => {
+  const { user_id, book_id } = req.body;
+
   if (checkNotIncludeBadCharaters(name)) {
     const books = await getBooksByName(name);
     return res.status(200).json(books);
