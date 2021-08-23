@@ -14,24 +14,24 @@ router.get("/", (req, res) => {
   return res.status(200).json({ message: "employes here" });
 });
 
-// METH		POST /employee/register
-// DESC		Register employee
-// ACCESS	public
-router.post("/register", async (req, res) => {
-  const { username, password } = req.body;
+// // METH		POST /employee/register
+// // DESC		Register employee
+// // ACCESS	public
+// router.post("/register", async (req, res) => {
+//   const { username, password } = req.body;
 
-  const employee = await createEmployee(username, password);
+//   const employee = await createEmployee(username, password);
 
-  //   Error Handling
-  if (employee.message) {
-    return res.status(400).json({ message: employee.message });
-  }
+//   //   Error Handling
+//   if (employee.message) {
+//     return res.status(400).json({ message: employee.message });
+//   }
 
-  return res.status(201).json({
-    message: "employee Registered...",
-    employee: { ...employee, password: undefined },
-  });
-});
+//   return res.status(201).json({
+//     message: "employee Registered...",
+//     employee: { ...employee, password: undefined },
+//   });
+// });
 
 // METH		POST /employee/login
 // DESC		Login employee (return access token and employee)
@@ -51,18 +51,18 @@ router.post("/login", async (req, res) => {
 
     const employee = data.rows;
 
-    // //TEST
-    // return res.json({ employee, username, password });
-
     // If employee exists
     if (employee.length > 0) {
       const passMatch = await verifyPassword(password, employee[0].password);
       // If password is correct
       if (passMatch) {
-        const token = await generateToken({
-          username: employee[0].username,
-          employee_id: employee[0].id,
-        });
+        const token = await generateToken(
+          {
+            username: employee[0].username,
+            employee_id: employee[0].id,
+          },
+          "employee"
+        );
         return res.status(200).json({ access_token: token });
       }
     }

@@ -8,7 +8,7 @@ const {
 } = require("../handlers");
 
 // METH		GET	/user/
-// DESC		Get all users
+// DESC		Get User Route
 // ACCESS	public
 router.get("/", (req, res) => {
   return res.status(200).json({ message: "users here" });
@@ -58,18 +58,18 @@ router.post("/login", async (req, res) => {
 
     const user = data.rows;
 
-    // //TEST
-    // return res.json({ user, username, password });
-
     // If user exists
     if (user.length > 0) {
       const passMatch = await verifyPassword(password, user[0].password);
       // If password is correct
       if (passMatch) {
-        const token = await generateToken({
-          username: user[0].username,
-          user_id: user[0].id,
-        });
+        const token = await generateToken(
+          {
+            username: user[0].username,
+            user_id: user[0].id,
+          },
+          (owner = "user")
+        );
         return res.status(200).json({ access_token: token });
       }
     }

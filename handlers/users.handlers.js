@@ -1,5 +1,6 @@
 const db = require("../db");
 const { hashPassword } = require("./common.handlers");
+const { verifyToken } = require("./token.handlers");
 
 module.exports = {
   getUsers: async () => {
@@ -32,5 +33,19 @@ module.exports = {
     } catch (error) {
       return { message: error.message };
     }
+  },
+  checkUserLoggedIn: async (req, res, next) => {
+    const ACCESS_TOKEN = req.headers.authorization;
+
+    if (ACCESS_TOKEN) {
+      const verify = await verifyToken(ACCESS_TOKEN);
+      if (verify) {
+        req.user_id = verify.user_id;
+        req.username = verify.username;
+        return next();
+      }
+    }
+
+    return res.status(401).json({ message: "unauthorized" });
   },
 };

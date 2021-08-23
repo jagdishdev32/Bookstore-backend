@@ -16,8 +16,10 @@ app.get("/", (req, res) => {
 // Routes
 const usersRoute = require("./routes/users.route");
 const employesRoute = require("./routes/employes.route");
+const booksRoute = require("./routes/books.route");
 
 app.use("/users", usersRoute);
 app.use("/employes", employesRoute);
+app.use("/books", booksRoute);
 
 module.exports = app;

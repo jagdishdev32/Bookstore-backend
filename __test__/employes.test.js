@@ -15,7 +15,6 @@ beforeAll(async () => {
 		password TEXT NOT NULL UNIQUE
 		)`
   );
-  console.log("Created Table");
 });
 
 beforeEach(async () => {
