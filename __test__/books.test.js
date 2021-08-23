@@ -3,7 +3,12 @@ const db = require("../db");
 const app = require("../app");
 const request = require("supertest");
 
-const { getBooks, generateToken, hashPassword } = require("../handlers");
+const {
+  getBooks,
+  generateToken,
+  hashPassword,
+  getBook,
+} = require("../handlers");
 
 const Auth = {};
 
@@ -218,5 +223,67 @@ describe("GET /books/search/:name", () => {
 
     expect(response.statusCode).toBe(200);
     expect(response.body.length).toBe(7);
+  });
+});
+
+// Updating Book
+describe("POST /books:id", () => {
+  test("response return with message and updated book", async () => {
+    const newBook = await request(app)
+      .post("/books")
+      .set("Authorization", Auth.employee.token)
+      .send({
+        name: "newBook",
+        author: "jd",
+        quantity: 200,
+        price: 100,
+      });
+
+    expect(newBook.body.message).toBe("Book Registered...");
+
+    const response = await request(app)
+      .post(`/books/${newBook.body.book.id}`)
+      .set("Authorization", Auth.employee.token)
+      .send({
+        name: "New Name",
+        author: "jd sir",
+        quantity: 211,
+        price: 200,
+      });
+
+    expect(response.body.message).toBe("updated..");
+    expect(response.body.book.name).toBe("New Name");
+    expect(response.statusCode).toBe(201);
+
+    const checkBook = await getBook(newBook.body.book.id);
+    expect(checkBook.name).toBe("New Name");
+  });
+});
+
+// Book Delete
+describe("DELETE /books/:id", () => {
+  test("response return with message deleted and book", async () => {
+    const newBook = await request(app)
+      .post("/books")
+      .set("Authorization", Auth.employee.token)
+      .send({
+        name: "newBook",
+        author: "jd",
+        quantity: 200,
+        price: 100,
+      });
+
+    expect(newBook.body.message).toBe("Book Registered...");
+
+    const response = await request(app)
+      .delete(`/books/${newBook.body.book.id}`)
+      .set("Authorization", Auth.employee.token);
+
+    expect(response.body.message).toBe("deleted");
+    expect(response.body.book.name).toBe("newBook");
+
+    // Making sure book is deleted
+    const books = await getBooks();
+    expect(books.length).toBe(15);
   });
 });

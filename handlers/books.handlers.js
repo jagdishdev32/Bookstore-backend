@@ -43,4 +43,18 @@ module.exports = {
     );
     return data.rows;
   },
+  updateBook: async (id, name, author, quantity, price) => {
+    const updatedBook = await db.query(
+      "UPDATE books SET name=$1, author=$2, quantity=$3, price=$4 WHERE id=$5 RETURNING *",
+      [name, author, quantity, price, id]
+    );
+    return updatedBook.rows[0];
+  },
+  deleteBook: async (id) => {
+    const deletedBook = await db.query(
+      "DELETE FROM books WHERE id=$1 RETURNING *",
+      [id]
+    );
+    return deletedBook.rows[0];
+  },
 };

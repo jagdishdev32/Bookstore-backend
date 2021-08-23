@@ -27,6 +27,8 @@ const {
   getBooks,
   increaseBookSales,
   getBooksByName,
+  updateBook,
+  deleteBook,
 } = require("./books.handlers");
 
 const {
@@ -58,6 +60,8 @@ module.exports = {
   createBook,
   getBook,
   getBooks,
+  updateBook,
+  deleteBook,
   increaseBookSales,
   getBooksByName,
   // Transactions
