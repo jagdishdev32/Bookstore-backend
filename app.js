@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 
 // Enabling Environment Variables from .env file
 require("dotenv").config();
@@ -6,6 +7,7 @@ require("dotenv").config();
 const app = express();
 
 // Enabling Json Parse Support
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
