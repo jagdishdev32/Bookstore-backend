@@ -11,7 +11,11 @@ const {
 // DESC		Get User Route
 // ACCESS	public
 router.get("/", (req, res) => {
-  return res.status(200).json({ message: "users here" });
+  db.query("SELECT * FROM users")
+    .then((users) => {
+      return res.status(200).json({ message: "users here", users: users });
+    })
+    .catch((error) => res.status(200).send({ error: error }));
 });
 
 // METH		POST /user/register
