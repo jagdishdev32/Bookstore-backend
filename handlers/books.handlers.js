@@ -2,7 +2,7 @@ const db = require("../db");
 
 module.exports = {
   getBooks: async () => {
-    const data = await db.query("SELECT * FROM books");
+    const data = await db.query("SELECT * FROM books ORDER BY id ASC");
     const books = data.rows;
 
     return books;

@@ -41,6 +41,7 @@ module.exports = {
           INNER JOIN book_transactions 
           ON books.id = book_transactions.book_id 
           WHERE book_transactions.user_id = $1
+          ORDER BY book_transactions.id ASC
           `,
         [user_id]
       );

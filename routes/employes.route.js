@@ -7,34 +7,40 @@ const {
   generateToken,
 } = require("../handlers");
 
-// METH		GET	/employee/
+// METH		GET	/employes/
 // DESC		Get all employes
 // ACCESS	public
 router.get("/", (req, res) => {
   return res.status(200).json({ message: "employes here" });
 });
 
-// // METH		POST /employee/register
-// // DESC		Register employee
-// // ACCESS	public
-// router.post("/register", async (req, res) => {
-//   const { username, password } = req.body;
+const EMPLOYEE_REGISTRATION_ENABLED =
+  process.env.EMPLOYEE_REGISTRATION_ENABLED || false;
 
-//   const employee = await createEmployee(username, password);
+// METH		POST /employes/register
+// DESC		Register employes
+// ACCESS	public
+// CONDITION  Check if enabled in Env file
+if (EMPLOYEE_REGISTRATION_ENABLED == "true") {
+  console.log("Employes Registration Enabled");
+  router.post("/register", async (req, res) => {
+    const { username, password } = req.body;
 
-//   //   Error Handling
-//   if (employee.message) {
-//     return res.status(400).json({ message: employee.message });
-//   }
+    const employee = await createEmployee(username, password);
 
-//   return res.status(201).json({
-//     message: "employee Registered...",
-//     employee: { ...employee, password: undefined },
-//   });
-// });
+    //   Error Handling
+    if (employee.message) {
+      return res.status(400).json({ message: employee.message });
+    }
 
-// METH		POST /employee/login
-// DESC		Login employee (return access token and employee)
+    return res.status(201).json({
+      message: "employee Registered...",
+      employee: { ...employee, password: undefined },
+    });
+  });
+}
+// METH		POST /employes/login
+// DESC		Login employes (return access token and employee)
 // ACCESS	public
 router.post("/login", async (req, res) => {
   const { username, password } = req.body;
