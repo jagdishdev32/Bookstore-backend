@@ -10,7 +10,7 @@ const connectionString = process.env.DATABASE_URL
   : undefined;
 
 const poolObject = connectionString
-  ? { connectionString }
+  ? { connectionString, ssl: { rejectUnauthorized: false } }
   : {
       host: process.env.DB_HOST,
       user: process.env.DB_USER,
